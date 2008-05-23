@@ -1,0 +1,88 @@
+#summary General project outline.
+#labels Overview,Unihan.txt,Schema
+
+= Introduction =
+
+The Unihan SQLite 3 database project is an attempt to make the data contained in the `Unihan.txt` _tagged_ database file more accessible.
+
+
+= Details =
+
+A _tagged_ database is one which is organized by including a repeating field for each line in a table, and a _tag_ which indicates the meaning of the data which follows, which is usually a single piece of data. For example, here is an excerpt from the Unihan.txt database file, which provides the data for the Unicode data point (in hex), _6096_:
+
+{{{
+U+6096	kCCCII	213E4F
+U+6096	kCNS1986	1-5551
+U+6096	kCNS1992	1-5551
+U+6096	kCangjie	PJBD
+U+6096	kCantonese	bui3 bui6
+U+6096	kCihaiT	532.202
+U+6096	kCowles	3378
+U+6096	kDaeJaweon	0720.040
+U+6096	kDefinition	be contradictory to, go counter
+U+6096	kEACC	213E4F
+U+6096	kFenn	113C
+U+6096	kFennIndex	392.09
+U+6096	kFourCornerCode	9404.7
+U+6096	kGB0	6703
+U+6096	kGB1	6703
+U+6096	kGSR	0491d
+U+6096	kHKGlyph	1342
+U+6096	kHanYu	42302.150
+U+6096	kHangul	패
+U+6096	kIICore	2.1
+U+6096	kIRGDaeJaweon	0720.040
+U+6096	kIRGDaiKanwaZiten	10663
+U+6096	kIRGHanyuDaZidian	42302.150
+U+6096	kIRGKangXi	0387.220
+U+6096	kIRG_GSource	0-6323
+U+6096	kIRG_JSource	0-5823
+U+6096	kIRG_KPSource	KP0-F2A3
+U+6096	kIRG_KSource	0-7827
+U+6096	kIRG_TSource	1-5551
+U+6096	kIRG_VSource	2-8C24
+U+6096	kJapaneseKun	MOTORU
+U+6096	kJapaneseOn	HAI BOTSU
+U+6096	kJis0	5603
+U+6096	kKPS0	F2A3
+U+6096	kKSC0	8807
+U+6096	kKangXi	0387.220
+U+6096	kKorean	PHAY PAL
+U+6096	kMainlandTelegraph	1883
+U+6096	kMandarin	BEI4 BO2
+U+6096	kMatthews	5003
+U+6096	kMeyerWempe	2476
+U+6096	kMorohashi	10663
+U+6096	kNelson	1699
+U+6096	kPhonetic	1093
+U+6096	kRSAdobe_Japan1_6	C+4844+61.3.7
+U+6096	kRSKangXi	61.7
+U+6096	kRSUnicode	61.7
+U+6096	kSBGY	387.43 480.23
+U+6096	kTaiwanTelegraph	1883
+U+6096	kTotalStrokes	10
+U+6096	kXHC1983	0046.070:bèi
+U+6096	kXerox	267:305
+}}}
+
+What the _SQLite 3_ Unihan database system does is to gather the third column data into tables bearing the second column as the name, and uses the data point as a primary key. 
+
+In addition, there is a base table created, _kBase_, which contains the data point as the primary key and which has a UTF-8 representation of the datapoint as well as a definition. Characters without definitions are not included in this table, since they would be of limited interest, and their usage as variants of characters in _kBase_, or used in proper names and classical texts (where their meaning might be guessed from the context.) 
+
+To extract a _table_ (a.k.a. a _result set_) from the _SQLite 3_ database, one uses SQL to join the tables. For example, if one wished to have a listing (which can be imported into a DBMS as table data) of the UTF-8 character, the traditional telegraph code and the meaning of the character, one would use the SQL statement:
+
+{{{
+SELECT kBase.char, kTaiwanTelegraph.v, kBase.def
+  FROM kBase, kTaiwanTelegraph
+  WHERE kBase.k = kTaiwanTelegraph.k;
+}}}
+
+(note: every table except for _kBase_ has two columns, _k_ for the data point, and _v_ for the data value it contains.)
+
+_SQLite 3_ can send the result set to a file, and format the data in a variety of ways, including tab-delimited and _csv_, so importing or post-processing data is relatively easy.
+
+I hope people interested in this project share their SQL and other scripts and/or programs. I plan to do some testing on the limits of how many _SQLite 3_ tables can be joined and in which ways. I also hope to simplify the creation of complex SQL scripts, and provide some post processors awk scripts for some of the more useful data in encoded format.
+
+If you have a particular need for a data set which needs post processing, don't hesitate to post a request to this wiki.
+
+David Rutkowski
