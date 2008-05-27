@@ -1,0 +1,32 @@
+#summary Unicode fonts
+
+= Introduction =
+
+A few Unicode fonts added.
+
+
+= Details =
+
+In the downloads section of this project you will now find zip files which contain True Type Unicode fonts. These files are included here since I personally had a hard time tracking down sources for these fonts. Once the fonts are unzipped and installed (the process varies based on the OS your are using), the fonts should be available to to most web browsers. Most editors only allow the specification of a single font for display, so to verify result sets which contain a wide range of UTF-8 characters, it might be necessary to change between fonts to view the characters which are part of the "extensions" to the basic Unicode standard. The comments of the latest Unihan.txt file contains the ranges of the characters:
+
+{{{
+################################################################################
+#
+# BEGIN Valid UniHan Ranges for this release (5.1.0):
+#    U+3400..U+4DB5   : CJK Unified Ideographs Extension A
+#    U+4E00..U+9FA5   : CJK Unified Ideographs
+#    U+9FA6..U+9FBB   : CJK Unified Ideographs (4.1)
+#    U+9FBC..U+9FC3   : CJK Unified Ideographs (5.1)
+#    U+F900..U+FA2D   : CJK Compatibility Ideographs (a)
+#    U+FA30..U+FA6A   : CJK Compatibility Ideographs (b)
+#    U+FA70..U+FAD9   : CJK Compatibility Ideographs (4.1)
+#    U+20000..U+2A6D6 : CJK Unified Ideographs Extension B
+#    U+2F800..U+2FA1D : CJK Compatibility Supplement
+# END Valid UniHan Ranges for this release (5.1)
+#
+################################################################################
+}}}
+
+As a reality check, note that almost all the characters you are likely to encounter in day to day Chinese are present in both Traditional and Simplified forms in the range, _CJK Unified Ideographs_. The other ranges deal with rare variants and characters used mainly for Proper names and ancient texts. But occasionally rarer characters will pop up in result sets, and it is necessary to use one or more of the specialized fonts to view them. To check your result set, output it to file, load the file into an editor, add <pre> at the beginning of the result set, </pre> at the end of it, and load the file into a browser. Your particular browser may require some header code at the beginning. Make sure you set the character set to UTF-8 if your browser doesn't allow you to interactively change the displayed character set. Your browser should automatically choose the fonts necessary to display your results. How you are going to use those results is an open question and probably presupposes a scholarly pursuit of a pretty high order.
+
+Good luck! At least you should have the fonts available to verify your results are accurate. 
